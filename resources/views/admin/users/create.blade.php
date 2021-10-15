@@ -4,7 +4,11 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                @include('forms.user_form', ['header_title' => __('Create User'), 'route_name' => 'admin.user.store'])
+                @include('forms.user_form', [
+                            'headerTitle' => __('Create User'),
+                            'routeName' => 'admin.user.store',
+                            'submitButton' => __('Create'),
+                ])
             </div>
         </div>
     </div>
