@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\{HomeController, UserController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,4 +20,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/admin', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('admin');
+Route::prefix('admin')->name('admin.')->group(function () {
+
+    Route::prefix('user')->name('user.')->group(function () {
+        Route::get('/create', [UserController::class, 'create'])->name('create');
+        Route::post('', [UserController::class, 'store'])->name('store');
+    });
+
+    Route::get('', [HomeController::class, 'index'])->name('admin');
+});
