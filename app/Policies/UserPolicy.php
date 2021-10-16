@@ -44,6 +44,17 @@ class UserPolicy
     }
 
     /**
+     * Determine whether the user can store models.
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function store(User $user): bool
+    {
+        return auth()->user()->is_manager;
+    }
+
+    /**
      * Determine whether the user can update the model.
      *
      * @param User $user

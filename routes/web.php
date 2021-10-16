@@ -27,5 +27,5 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('', [UserController::class, 'store'])->name('store');
     });
 
-    Route::get('', [HomeController::class, 'index'])->name('admin');
+    Route::get('', [HomeController::class, 'index'])->name('index');
 });

@@ -60,6 +60,12 @@
                 </div>
             </div>
 
+            @if (!empty(auth()->user()))
+                <input type="hidden" name="manager_id" value="{{ auth()->user()->id }}">
+            @else
+                <input type="hidden" name="is_manager" value="true">
+            @endif
+
             <div class="form-group row mb-0">
                 <div class="col-md-6 offset-md-4">
                     <button type="submit" class="btn btn-primary">

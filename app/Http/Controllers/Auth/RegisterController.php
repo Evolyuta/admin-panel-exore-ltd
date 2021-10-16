@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Normalizer\CreateUserNormalizer;
 use App\Providers\RouteServiceProvider;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -31,14 +32,19 @@ class RegisterController extends Controller
      */
     protected $redirectTo = RouteServiceProvider::ADMIN;
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    private UserRepositoryInterface $userRepository;
+
+    private CreateUserNormalizer $createUserNormalizer;
+
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        CreateUserNormalizer    $createUserNormalizer
+    )
     {
         $this->middleware('guest');
+
+        $this->userRepository = $userRepository;
+        $this->createUserNormalizer = $createUserNormalizer;
     }
 
     /**
@@ -50,9 +56,10 @@ class RegisterController extends Controller
     protected function validator(array $data): \Illuminate\Contracts\Validation\Validator
     {
         return Validator::make($data, [
-            'name'     => ['required', 'string', 'max:255'],
-            'email'    => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'name'       => ['required', 'string', 'max:255'],
+            'email'      => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password'   => ['required', 'string', 'min:8', 'confirmed'],
+            'is_manager' => ['required'],
         ]);
     }
 
@@ -64,9 +71,8 @@ class RegisterController extends Controller
      */
     protected function create(array $data): User
     {
-        return User::create([
-            'email'    => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        $payload = $this->createUserNormalizer->normalize($data);
+
+        return $this->userRepository->create($payload);
     }
 }
