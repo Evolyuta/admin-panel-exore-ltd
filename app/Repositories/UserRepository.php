@@ -7,15 +7,15 @@ namespace App\Repositories;
 use App\Models\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 
-class UserRepository extends CoreRepository implements UserRepositoryInterface
+class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
     /**
-     * @var User
+     * UserRepository constructor.
+     *
+     * @param User $model
      */
-    protected User $model;
-
-    public function __construct()
+    public function __construct(User $model)
     {
-        $this->model = new User();
+        parent::__construct($model);
     }
 }
