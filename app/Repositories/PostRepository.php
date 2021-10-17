@@ -43,22 +43,41 @@ class PostRepository extends BaseRepository implements PostRepositoryInterface
     }
 
     /**
-     * Getting post instance by id for detail page
+     * Getting post instance by id for detail page by manager
      *
-     * @param $id
+     * @param int $id
      * @return Builder|Builder[]|Collection|Model|null
      */
-    public function getByIdForDetailPage($id)
+    public function getByIdForDetailPageForManager(int $id)
     {
-        return $this->getById(
-            $id,
+        return $this->getByIdForDetailPage($id, ['employee:id,name'], ['employee_id']);
+    }
+
+    /**
+     * Getting post instance by id for detail page
+     *
+     * @param int $id
+     * @param array $additionalRelationships
+     * @param array $additionalSelect
+     * @return Builder|Builder[]|Collection|Model|null
+     */
+    public function getByIdForDetailPage(int $id, array $additionalRelationships = [], array $additionalSelect = [])
+    {
+        $relationships = array_merge(['category:id,name'], $additionalRelationships);
+        $select = array_merge(
             [
                 'id',
                 'name',
                 'image_path',
                 'category_id',
             ],
-            ['category:id,name']
+            $additionalSelect
+        );
+
+        return $this->getById(
+            $id,
+            $select,
+            $relationships
         );
     }
 }

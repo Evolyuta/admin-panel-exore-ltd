@@ -70,7 +70,11 @@ class PostController extends Controller
      */
     public function show(int $postId): Renderable
     {
-        $post = $this->postRepository->getByIdForDetailPage($postId);
+        if (auth()->user()->is_manager) {
+            $post = $this->postRepository->getByIdForDetailPageForManager($postId);
+        } else {
+            $post = $this->postRepository->getByIdForDetailPage($postId);
+        }
 
         return view('admin.posts.show', compact('post'));
     }

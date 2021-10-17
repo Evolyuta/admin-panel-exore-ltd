@@ -31,4 +31,14 @@ class Post extends Model
     {
         return $this->BelongsTo(Category::class);
     }
+
+    /**
+     * Relationship with user
+     *
+     * @return BelongsTo
+     */
+    public function employee(): BelongsTo
+    {
+        return $this->BelongsTo(User::class);
+    }
 }
