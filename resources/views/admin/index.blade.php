@@ -16,52 +16,41 @@
 
             </div>
 
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">{{ __('Posts') }}</div>
+            @if (session('status'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('status') }}
+                </div>
+            @endif
 
 
-                    <div class="card-body">
-
-                        @if (session('status'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
-                            </div>
-                        @endif
-
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">First</th>
-                                <th scope="col">Last</th>
-                                <th scope="col">Handle</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Larry</td>
-                                <td>the Bird</td>
-                                <td>@twitter</td>
-                            </tr>
-                            </tbody>
-                        </table>
+            @if(count($posts))
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">{{ __('Posts') }}</div>
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Name</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($posts as $post)
+                                    <tr>
+                                        <th scope="row">{{$post->id}}</th>
+                                        <td>{{$post->name}}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                            {{$posts->links('vendor.pagination.bootstrap-4')}}
+                        </div>
                     </div>
                 </div>
-            </div>
+
+
+            @endif
         </div>
     </div>
 @endsection

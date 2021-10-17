@@ -10,6 +10,7 @@ use App\Repositories\Interfaces\PostRepositoryInterface;
 use App\Services\FileService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -38,6 +39,22 @@ class PostController extends Controller
         $this->fileService = $fileService;
 
         $this->model = Post::class;
+    }
+
+    /**
+     * Post list table.
+     *
+     * @return Renderable
+     */
+    public function index(): Renderable
+    {
+        if (auth()->user()->is_manager) {
+            $posts = $this->postRepository->getListByAuthedManager();
+        } else {
+            $posts = $this->postRepository->getListByAuthedEmployee();
+        }
+
+        return view('admin.index', compact('posts'));
     }
 
     /**

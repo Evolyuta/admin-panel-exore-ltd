@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\{HomeController, PostController, UserController};
+use App\Http\Controllers\Admin\{PostController, UserController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,5 +32,5 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('', [PostController::class, 'store'])->name('store');
     });
 
-    Route::get('', [HomeController::class, 'index'])->name('index');
+    Route::get('', [PostController::class, 'index'])->name('index');
 });

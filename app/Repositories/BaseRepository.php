@@ -14,6 +14,8 @@ class BaseRepository implements BaseRepositoryInterface
      */
     protected Model $model;
 
+    protected Builder $query;
+
     /**
      * BaseRepository constructor.
      *
@@ -22,6 +24,8 @@ class BaseRepository implements BaseRepositoryInterface
     public function __construct(Model $model)
     {
         $this->model = $model;
+
+        $this->query = $this->model->query();
     }
 
     /**
@@ -43,12 +47,10 @@ class BaseRepository implements BaseRepositoryInterface
      */
     public function getList(array $select = [])
     {
-        $query = $this->model->query();
-
         if (!empty($select)) {
-            return $query->get($select);
+            return $this->query->get($select);
         }
 
-        return $query->get();
+        return $this->query->get();
     }
 }
