@@ -52,6 +52,9 @@ class PostController extends Controller
         if (!empty(request()->category_id)) {
             $filter = ['category_id' => (int)request()->category_id];
         }
+        if (!empty(request()->employee_id)) {
+            $filter = ['employee_id' => (int)request()->employee_id];
+        }
 
         if (auth()->user()->is_manager) {
             $posts = $this->postRepository->getListByAuthedManager($filter);
@@ -67,6 +70,7 @@ class PostController extends Controller
      *
      * @param int $postId
      * @return Renderable
+     * @throws AuthorizationException
      */
     public function show(int $postId): Renderable
     {
@@ -75,6 +79,8 @@ class PostController extends Controller
         } else {
             $post = $this->postRepository->getByIdForDetailPage($postId);
         }
+
+        $this->checkAccess('view', $post);
 
         return view('admin.posts.show', compact('post'));
     }

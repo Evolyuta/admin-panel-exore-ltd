@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -16,12 +17,19 @@ class Controller extends BaseController
      * Checking whether the user can perform a given manipulation with the model
      *
      * @param string $method
+     * @param Model|null $instance
      * @throws AuthorizationException
      */
-    protected function checkAccess(string $method)
+    protected function checkAccess(string $method, Model $instance = null)
     {
         if (!empty($this->model)) {
-            $this->authorize($method, $this->model);
+            $argument = $this->model;
+
+            if (!empty($instance)) {
+                $argument = [$argument, $instance];
+            }
+
+            $this->authorize($method, $argument);
         }
     }
 }
