@@ -22,6 +22,9 @@ class CreatePostsTable extends Migration
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories');
 
+            $table->unsignedBigInteger('employee_id');
+            $table->foreign('employee_id')->references('id')->on('users');
+
             $table->timestamps();
         });
     }
