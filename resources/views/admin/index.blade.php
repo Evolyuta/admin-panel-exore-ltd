@@ -39,7 +39,11 @@
                                 @foreach($posts as $post)
                                     <tr>
                                         <th scope="row">{{$post->id}}</th>
-                                        <td>{{$post->name}}</td>
+                                        <td>
+                                            <a href="{{ route('admin.post.show', ['id'=>$post->id])  }}">
+                                                {{$post->name}}
+                                            </a>
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>

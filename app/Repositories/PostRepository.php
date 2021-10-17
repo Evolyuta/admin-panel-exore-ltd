@@ -6,6 +6,9 @@ namespace App\Repositories;
 
 use App\Models\Post;
 use App\Repositories\Interfaces\PostRepositoryInterface;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 class PostRepository extends BaseRepository implements PostRepositoryInterface
 {
@@ -24,9 +27,9 @@ class PostRepository extends BaseRepository implements PostRepositoryInterface
      *
      * @return mixed
      */
-    public function getListByAuthedEmployee()
+    public function getListByAuthedEmployee($filter = [])
     {
-        return auth()->user()->posts()->select(['id', 'name'])->paginate(10);
+        return auth()->user()->posts()->select(['id', 'name'])->where($filter)->paginate(10);
     }
 
     /**
@@ -34,8 +37,28 @@ class PostRepository extends BaseRepository implements PostRepositoryInterface
      *
      * @return mixed
      */
-    public function getListByAuthedManager()
+    public function getListByAuthedManager($filter = [])
     {
-        return auth()->user()->employeePosts()->paginate(10);
+        return auth()->user()->employeePosts()->where($filter)->paginate(10);
+    }
+
+    /**
+     * Getting post instance by id for detail page
+     *
+     * @param $id
+     * @return Builder|Builder[]|Collection|Model|null
+     */
+    public function getByIdForDetailPage($id)
+    {
+        return $this->getById(
+            $id,
+            [
+                'id',
+                'name',
+                'image_path',
+                'category_id',
+            ],
+            ['category:id,name']
+        );
     }
 }

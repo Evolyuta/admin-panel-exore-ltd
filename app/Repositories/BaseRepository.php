@@ -53,4 +53,24 @@ class BaseRepository implements BaseRepositoryInterface
 
         return $this->query->get();
     }
+
+    /**
+     * Getting model instance by id
+     *
+     * @param int $id
+     * @param array $select
+     * @param array $relationships
+     * @return Builder|Builder[]|Collection|Model|null
+     */
+    public function getById(int $id, array $select = [], array $relationships = [])
+    {
+        if (!empty($select)) {
+            $this->query = $this->query->select($select);
+        }
+        if (!empty($relationships)) {
+            $this->query = $this->query->with($relationships);
+        }
+
+        return $this->query->findOrFail($id);
+    }
 }

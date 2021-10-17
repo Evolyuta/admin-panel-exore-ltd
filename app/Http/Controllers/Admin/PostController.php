@@ -48,13 +48,31 @@ class PostController extends Controller
      */
     public function index(): Renderable
     {
+        $filter = [];
+        if (!empty(request()->category_id)) {
+            $filter = ['category_id' => (int)request()->category_id];
+        }
+
         if (auth()->user()->is_manager) {
-            $posts = $this->postRepository->getListByAuthedManager();
+            $posts = $this->postRepository->getListByAuthedManager($filter);
         } else {
-            $posts = $this->postRepository->getListByAuthedEmployee();
+            $posts = $this->postRepository->getListByAuthedEmployee($filter);
         }
 
         return view('admin.index', compact('posts'));
+    }
+
+    /**
+     * Post index view.
+     *
+     * @param int $postId
+     * @return Renderable
+     */
+    public function show(int $postId): Renderable
+    {
+        $post = $this->postRepository->getByIdForDetailPage($postId);
+
+        return view('admin.posts.show', compact('post'));
     }
 
     /**
