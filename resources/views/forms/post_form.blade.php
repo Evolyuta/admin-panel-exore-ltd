@@ -2,7 +2,7 @@
     <div class="card-header">{{ $headerTitle }}</div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route($routeName) }}">
+        <form action="{{ route($routeName) }}" enctype="multipart/form-data" method="POST">
             @csrf
 
             <div class="form-group row">
@@ -21,10 +21,11 @@
             </div>
 
             <div class="form-group row">
-                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Image') }}</label>
+                <label for="image" class="col-md-4 col-form-label text-md-right">{{ __('Image') }}</label>
 
                 <div class="col-md-6">
-                    <input type="file" name="image" class="form-control">
+                    <input type="file" class="form-control @error('image') is-invalid @enderror" id="image"
+                           name="image">
 
                     @error('image')
                     <span class="invalid-feedback" role="alert">
@@ -35,16 +36,18 @@
             </div>
 
             <div class="form-group row">
-                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Category') }}</label>
+                <label for="category_id" class="col-md-4 col-form-label text-md-right">{{ __('Category') }}</label>
 
                 <div class="col-md-6">
-                    <select class="form-control form-select" name="category" aria-label="Default select example">
+                    <select class="form-control form-select @error('category_id') is-invalid @enderror"
+                            name="category_id" id="category_id"
+                            aria-label="Default select example">
                         @foreach($categories as $category)
                             <option value="{{$category->id}}">{{$category->name}}</option>
                         @endforeach
                     </select>
 
-                    @error('category')
+                    @error('category_id')
                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

@@ -3,28 +3,31 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
+use App\Http\Requests\Post\CreatePostFormRequest;
 use App\Models\Post;
+use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Request;
 
 class PostController extends Controller
 {
     protected string $model;
 
+    private CategoryRepositoryInterface $categoryRepository;
 
-    public function __construct()
+    public function __construct(CategoryRepositoryInterface $categoryRepository)
     {
         $this->middleware('auth');
+
+        $this->categoryRepository = $categoryRepository;
 
         $this->model = Post::class;
     }
 
     /**
-     * Create user view
+     * Create post view
      *
      * @return Application|Factory|View
      * @throws AuthorizationException
@@ -33,7 +36,7 @@ class PostController extends Controller
     {
         $this->checkAccess('create');
 
-        $categories = Category::get('name');
+        $categories = $this->categoryRepository->getListForPostForm();
 
         return view('admin.posts.create', compact('categories'));
     }
@@ -41,9 +44,9 @@ class PostController extends Controller
     /**
      * Storing new post
      *
-     * @param Request $request
+     * @param CreatePostFormRequest $request
      */
-    public function store(Request $request)
+    public function store(CreatePostFormRequest $request)
     {
         //
     }
