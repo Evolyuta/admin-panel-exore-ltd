@@ -5,10 +5,10 @@ namespace App\Repositories\Interfaces;
 
 
 /**
- * Interface UserRepositoryInterface
+ * Interface PostRepositoryInterface
  * @package App\Repositories\Interfaces
  */
-interface UserRepositoryInterface extends BaseRepositoryInterface
+interface PostRepositoryInterface extends BaseRepositoryInterface
 {
     //
 }

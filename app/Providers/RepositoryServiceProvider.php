@@ -6,7 +6,9 @@ use App\Repositories\BaseRepository;
 use App\Repositories\CategoryRepository;
 use App\Repositories\Interfaces\BaseRepositoryInterface;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
+use App\Repositories\Interfaces\PostRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\PostRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -22,6 +24,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->registerBaseRepository();
         $this->registerUserRepository();
         $this->registerCategoryRepository();
+        $this->registerPostRepository();
     }
 
     /**
@@ -54,6 +57,17 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             CategoryRepositoryInterface::class,
             CategoryRepository::class
+        );
+    }
+
+    /**
+     * Registering post repository
+     */
+    private function registerPostRepository()
+    {
+        $this->app->bind(
+            PostRepositoryInterface::class,
+            PostRepository::class
         );
     }
 }
