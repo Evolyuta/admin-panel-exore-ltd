@@ -2,7 +2,7 @@
     <div class="card-header">{{ $headerTitle }}</div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route($routeName) }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route($routeName) }}">
             @csrf
 
             <div class="form-group row">
@@ -21,13 +21,12 @@
             </div>
 
             <div class="form-group row">
-                <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Image') }}</label>
 
                 <div class="col-md-6">
-                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
-                           name="email" value="{{ old('email') }}" required autocomplete="email">
+                    <input type="file" name="image" class="form-control">
 
-                    @error('email')
+                    @error('image')
                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -36,35 +35,22 @@
             </div>
 
             <div class="form-group row">
-                <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Category') }}</label>
 
                 <div class="col-md-6">
-                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
-                           name="password" required autocomplete="new-password">
+                    <select class="form-control form-select" name="category" aria-label="Default select example">
+                        @foreach($categories as $category)
+                            <option value="{{$category->id}}">{{$category->name}}</option>
+                        @endforeach
+                    </select>
 
-                    @error('password')
+                    @error('category')
                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                     @enderror
                 </div>
             </div>
-
-            <div class="form-group row">
-                <label for="password-confirm"
-                       class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                <div class="col-md-6">
-                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation"
-                           required autocomplete="new-password">
-                </div>
-            </div>
-
-            @if (!empty(auth()->user()))
-                <input type="hidden" name="manager_id" value="{{ auth()->user()->id }}">
-            @else
-                <input type="hidden" name="is_manager" value="true">
-            @endif
 
             <div class="form-group row mb-0">
                 <div class="col-md-6 offset-md-4">

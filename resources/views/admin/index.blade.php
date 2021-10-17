@@ -5,14 +5,20 @@
         <div class="row justify-content-center">
 
             <div class="col-md-12 mb-3">
+
                 @can('create', \App\Models\User::class)
                     <a href="{{ route('admin.user.create') }}" class="link-primary">Create Employee</a>
                 @endcan
+
+                @can('create', \App\Models\Post::class)
+                    <a href="{{ route('admin.post.create') }}" class="link-primary">Create Post</a>
+                @endcan
+
             </div>
 
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">{{ __('Records') }}</div>
+                    <div class="card-header">{{ __('Posts') }}</div>
 
 
                     <div class="card-body">

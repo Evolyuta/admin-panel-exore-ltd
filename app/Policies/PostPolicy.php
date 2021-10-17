@@ -5,7 +5,7 @@ namespace App\Policies;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class UserPolicy
+class PostPolicy
 {
     use HandlesAuthorization;
 
@@ -17,7 +17,7 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        return $user->is_manager;
+        return !$user->is_manager;
     }
 
     /**
@@ -28,6 +28,6 @@ class UserPolicy
      */
     public function store(User $user): bool
     {
-        return $user->is_manager;
+        return !$user->is_manager;
     }
 }
