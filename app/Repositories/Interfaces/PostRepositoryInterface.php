@@ -10,9 +10,9 @@ namespace App\Repositories\Interfaces;
  */
 interface PostRepositoryInterface extends BaseRepositoryInterface
 {
-    public function getListByAuthedEmployee($filter = []);
+    public function getListByAuthedEmployee(array $parameters = []);
 
-    public function getListByAuthedManager($filter = []);
+    public function getListByAuthedManager(array $parameters = []);
 
     public function getByIdForDetailPage(int $id, array $additionalRelationships = [], array $additionalSelect = []);
 

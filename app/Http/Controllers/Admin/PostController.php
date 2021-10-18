@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Post\CreatePostFormRequest;
+use App\Http\Requests\Post\IndexPostFormRequest;
 use App\Models\Post;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\PostRepositoryInterface;
@@ -44,22 +44,17 @@ class PostController extends Controller
     /**
      * Post list table.
      *
+     * @param IndexPostFormRequest $request
      * @return Renderable
      */
-    public function index(): Renderable
+    public function index(IndexPostFormRequest $request): Renderable
     {
-        $filter = [];
-        if (!empty(request()->category_id)) {
-            $filter = ['category_id' => (int)request()->category_id];
-        }
-        if (!empty(request()->employee_id)) {
-            $filter = ['employee_id' => (int)request()->employee_id];
-        }
+        $parameters = $request->all();
 
         if (auth()->user()->is_manager) {
-            $posts = $this->postRepository->getListByAuthedManager($filter);
+            $posts = $this->postRepository->getListByAuthedManager($parameters);
         } else {
-            $posts = $this->postRepository->getListByAuthedEmployee($filter);
+            $posts = $this->postRepository->getListByAuthedEmployee($parameters);
         }
 
         return view('admin.index', compact('posts'));
@@ -103,11 +98,11 @@ class PostController extends Controller
     /**
      * Storing new post
      *
-     * @param CreatePostFormRequest $request
+     * @param IndexPostFormRequest $request
      * @return RedirectResponse
      * @throws AuthorizationException
      */
-    public function store(CreatePostFormRequest $request): RedirectResponse
+    public function store(IndexPostFormRequest $request): RedirectResponse
     {
         $this->checkAccess('store');
 

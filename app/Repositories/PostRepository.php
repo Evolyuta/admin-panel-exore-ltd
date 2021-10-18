@@ -25,21 +25,36 @@ class PostRepository extends BaseRepository implements PostRepositoryInterface
     /**
      * Getting post list with authed user as author
      *
+     * @param array $parameters
      * @return mixed
      */
-    public function getListByAuthedEmployee($filter = [])
+    public function getListByAuthedEmployee(array $parameters = [])
     {
-        return auth()->user()->posts()->select(['id', 'name'])->where($filter)->paginate(10);
+        return $this->getListByAuthedUser('posts', $parameters)->select(['id', 'name'])->paginate(10);
+    }
+
+    private function getListByAuthedUser(string $relationship, array $parameters = [])
+    {
+        $filter = [];
+        if (!empty($parameters['category_id'])) {
+            $filter = ['category_id' => (int)$parameters['category_id']];
+        }
+        if (!empty($parameters['employee_id'])) {
+            $filter = ['employee_id' => (int)$parameters['employee_id']];
+        }
+
+        return auth()->user()->{$relationship}()->where($filter);
     }
 
     /**
      * Getting post list with authed user as manager of authors
      *
+     * @param array $parameters
      * @return mixed
      */
-    public function getListByAuthedManager($filter = [])
+    public function getListByAuthedManager(array $parameters = [])
     {
-        return auth()->user()->employeePosts()->where($filter)->paginate(10);
+        return $this->getListByAuthedUser('employeePosts', $parameters)->paginate(10);
     }
 
     /**
