@@ -14,20 +14,19 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        Category::factory()->create([
-            'name' => 'Sport',
-        ]);
+        $categoryNames = [
+            'Sport',
+            'IT',
+            'Music',
+            'Politics',
+        ];
 
-        Category::factory()->create([
-            'name' => 'IT',
-        ]);
-
-        Category::factory()->create([
-            'name' => 'Music',
-        ]);
-
-        Category::factory()->create([
-            'name' => 'Politics',
-        ]);
+        foreach ($categoryNames as $categoryName) {
+            if (!Category::where('name', $categoryName)) {
+                Category::factory()->create([
+                    'name' => $categoryName,
+                ]);
+            }
+        }
     }
 }
