@@ -19,4 +19,6 @@ interface BaseRepositoryInterface
     public function getById(int $id, array $select = [], array $relationships = []);
 
     public function delete(Model $model);
+
+    public function update(Model $model, array $attributes);
 }
