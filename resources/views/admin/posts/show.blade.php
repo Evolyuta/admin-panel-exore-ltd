@@ -5,10 +5,16 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
 
-                <h1 data-arx-type="heading" contenteditable="true" data-gramm_editor="false"
-                    data-arx-first-level="true" class="">
-                    {{$post->name}}
-                </h1>
+                <div class="d-flex">
+                    <h1 data-arx-type="heading" contenteditable="true" data-gramm_editor="false"
+                        data-arx-first-level="true" class="">
+                        {{$post->name}}
+                    </h1>
+
+                    <div class="ml-3 d-flex">
+                        @include('components.post_actions')
+                    </div>
+                </div>
 
                 @if(!empty($post->employee))
                     <div class="d-flex">
