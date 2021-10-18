@@ -28,10 +28,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
     Route::prefix('post')->name('post.')->group(function () {
-        Route::delete('/{id}', [PostController::class, 'delete'])->name('delete');
         Route::get('/create', [PostController::class, 'create'])->name('create');
         Route::get('/{id}', [PostController::class, 'show'])->name('show');
+        Route::get('/{id}/edit', [PostController::class, 'edit'])->name('edit');
         Route::post('', [PostController::class, 'store'])->name('store');
+        Route::put('', [PostController::class, 'update'])->name('update');
+        Route::delete('/{id}', [PostController::class, 'delete'])->name('delete');
     });
 
     Route::get('/', [PostController::class, 'index'])->name('index');

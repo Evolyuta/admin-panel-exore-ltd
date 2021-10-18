@@ -60,7 +60,7 @@
 
                                                 @can('edit', $post)
                                                     <span class="inline-flex">
-                                                    <a href="#"
+                                                    <a href="{{ route('admin.post.edit', ['id'=>$post->id]) }}"
                                                        class="inline-flex cursor-pointer text-70 mr-3 has-tooltip"
                                                     >
                                                 @include('svg.edit_icon')

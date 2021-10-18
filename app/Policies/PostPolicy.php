@@ -49,11 +49,12 @@ class PostPolicy
      *
      * @param User $user
      * @param Post $post
+     * @param bool $onlyDirectAttribution
      * @return bool
      */
-    private function checkPostOwnership(User $user, Post $post): bool
+    private function checkPostOwnership(User $user, Post $post, bool $onlyDirectAttribution = false): bool
     {
-        if ($user->is_manager) {
+        if (!$onlyDirectAttribution && $user->is_manager) {
             $posts = $user->employeePosts->pluck('id')->toArray();
         } else {
             $posts = $user->posts->pluck('id')->toArray();
@@ -72,5 +73,17 @@ class PostPolicy
     public function delete(User $user, Post $post): bool
     {
         return $this->checkPostOwnership($user, $post);
+    }
+
+    /**
+     * Determine whether the user can edit the model.
+     *
+     * @param User $user
+     * @param Post $post
+     * @return bool
+     */
+    public function edit(User $user, Post $post): bool
+    {
+        return $this->checkPostOwnership($user, $post, true);
     }
 }

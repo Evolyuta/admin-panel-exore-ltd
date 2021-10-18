@@ -5,12 +5,20 @@
         <form action="{{ route($routeName) }}" enctype="multipart/form-data" method="POST">
             @csrf
 
+            @if(!empty($post))
+                @method('PATCH')
+            @endif
+
             <div class="form-group row">
                 <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 
                 <div class="col-md-6">
                     <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name"
-                           value="{{ old('name') }}" required autocomplete="name" autofocus>
+                           value="{{ (!empty($post) && !old('name')) ? $post->name : old('name') }}"
+                           @if(!empty($post)) required @endif
+                           autocomplete="name"
+                           autofocus
+                    >
 
                     @error('name')
                     <span class="invalid-feedback" role="alert">
@@ -24,6 +32,7 @@
                 <label for="image" class="col-md-4 col-form-label text-md-right">{{ __('Image') }}</label>
 
                 <div class="col-md-6">
+
                     <input type="file" class="form-control @error('image') is-invalid @enderror" id="image"
                            name="image">
 
@@ -43,7 +52,9 @@
                             name="category_id" id="category_id"
                             aria-label="Default select example">
                         @foreach($categories as $category)
-                            <option value="{{$category->id}}">{{$category->name}}</option>
+                            <option value="{{$category->id}}"
+                                    @if($category->id === $category_id) selected @endif
+                            >{{$category->name}}</option>
                         @endforeach
                     </select>
 
@@ -57,6 +68,10 @@
 
 
             <input type="hidden" name="employee_id" value="{{ auth()->user()->id }}">
+
+            @if(!empty($post))
+                <input type="hidden" name="id" value="{{ $post->id }}">
+            @endif
 
             <div class="form-group row mb-0">
                 <div class="col-md-6 offset-md-4">

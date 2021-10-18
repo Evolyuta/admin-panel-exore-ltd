@@ -95,4 +95,19 @@ class PostRepository extends BaseRepository implements PostRepositoryInterface
             $relationships
         );
     }
+
+    /**
+     * Getting post instance by id for edit page
+     *
+     * @param int $id
+     * @return Builder|Builder[]|Collection|Model|null
+     */
+    public function getByIdForEditForm(int $id)
+    {
+        return $this->getById($id, [
+            'id',
+            'name',
+            'category_id',
+        ]);
+    }
 }

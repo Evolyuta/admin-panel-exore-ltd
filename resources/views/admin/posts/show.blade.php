@@ -26,10 +26,8 @@
                     </a>
                 </div>
 
-                <figure data-arx-type="image" data-arx-first-level="true">
-                    <img src="{{$post->image_path}}" alt="{{$post->name}}" width="600"
-                         class="img-fluid">
-                </figure>
+                <img src="{{$post->image_path}}" alt="{{$post->name}}" width="600"
+                     class="img-fluid">
             </div>
         </div>
     </div>

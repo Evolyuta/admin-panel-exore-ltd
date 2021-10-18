@@ -14,6 +14,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class PostController extends Controller
 {
@@ -114,14 +115,42 @@ class PostController extends Controller
     }
 
     /**
+     * Edit post view
+     *
+     * @param int $postId
+     * @return Application|Factory|View
+     * @throws AuthorizationException
+     */
+    public function edit(int $postId)
+    {
+        $post = $this->postRepository->getByIdForEditForm($postId);
+
+        $this->checkAccess('edit', $post);
+
+        $categories = $this->categoryRepository->getListForPostForm();
+
+        return view('admin.posts.create', compact('post', 'categories'));
+    }
+
+    public function update(Request $request)
+    {
+        //
+    }
+
+    /**
      * Post delete method.
      *
      * @param int $postId
      * @return RedirectResponse
+     * @throws AuthorizationException
      */
     public function delete(int $postId): RedirectResponse
     {
-        $this->postRepository->delete($postId);
+        $post = $this->postRepository->getById($postId, ['id']);
+
+        $this->checkAccess('delete', $post);
+
+        $this->postRepository->delete($post);
 
         return redirect()->route('admin.index')->with(['status' => 'Post successfully deleted']);
     }

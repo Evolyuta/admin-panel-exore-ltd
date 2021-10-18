@@ -17,4 +17,6 @@ interface PostRepositoryInterface extends BaseRepositoryInterface
     public function getByIdForDetailPage(int $id, array $additionalRelationships = [], array $additionalSelect = []);
 
     public function getByIdForDetailPageForManager(int $id);
+
+    public function getByIdForEditForm(int $id);
 }

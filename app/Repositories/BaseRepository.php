@@ -75,14 +75,12 @@ class BaseRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Deleting model instance by id
+     * Deleting model instance
      *
-     * @param int $id
+     * @param Model $model
      */
-    public function delete(int $id)
+    public function delete(Model $model)
     {
-        $post = $this->getById($id, ['id']);
-
-        $post->delete();
+        $model->delete();
     }
 }
