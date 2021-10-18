@@ -110,4 +110,18 @@ class PostRepository extends BaseRepository implements PostRepositoryInterface
             'category_id',
         ]);
     }
+
+    /**
+     * Getting post instance by id for updating method
+     *
+     * @param int $id
+     * @return Builder|Builder[]|Collection|Model|null
+     */
+    public function getByIdForUpdating(int $id)
+    {
+        return $this->getById($id, [
+            'id',
+            'image_path',
+        ]);
+    }
 }

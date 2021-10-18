@@ -6,7 +6,7 @@
             @csrf
 
             @if(!empty($post))
-                @method('PATCH')
+                @method('PUT')
             @endif
 
             <div class="form-group row">

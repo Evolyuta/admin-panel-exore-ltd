@@ -45,25 +45,6 @@ class PostPolicy
     }
 
     /**
-     * Checking whether the user or his employees owns post
-     *
-     * @param User $user
-     * @param Post $post
-     * @param bool $onlyDirectAttribution
-     * @return bool
-     */
-    private function checkPostOwnership(User $user, Post $post, bool $onlyDirectAttribution = false): bool
-    {
-        if (!$onlyDirectAttribution && $user->is_manager) {
-            $posts = $user->employeePosts->pluck('id')->toArray();
-        } else {
-            $posts = $user->posts->pluck('id')->toArray();
-        }
-
-        return in_array($post->id, $posts);
-    }
-
-    /**
      * Determine whether the user can delete the model.
      *
      * @param User $user
@@ -86,4 +67,36 @@ class PostPolicy
     {
         return $this->checkPostOwnership($user, $post, true);
     }
+
+    /**
+     * Determine whether the user can update the model.
+     *
+     * @param User $user
+     * @param Post $post
+     * @return bool
+     */
+    public function update(User $user, Post $post): bool
+    {
+        return $this->checkPostOwnership($user, $post, true);
+    }
+
+    /**
+     * Checking whether the user or his employees owns post
+     *
+     * @param User $user
+     * @param Post $post
+     * @param bool $onlyDirectAttribution
+     * @return bool
+     */
+    private function checkPostOwnership(User $user, Post $post, bool $onlyDirectAttribution = false): bool
+    {
+        if (!$onlyDirectAttribution && $user->is_manager) {
+            $posts = $user->employeePosts->pluck('id')->toArray();
+        } else {
+            $posts = $user->posts->pluck('id')->toArray();
+        }
+
+        return in_array($post->id, $posts);
+    }
+
 }

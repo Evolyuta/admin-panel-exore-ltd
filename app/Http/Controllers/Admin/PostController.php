@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Post\CreatePostFormRequest;
 use App\Http\Requests\Post\IndexPostFormRequest;
+use App\Http\Requests\Post\UpdatePostFormRequest;
 use App\Models\Post;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\PostRepositoryInterface;
@@ -14,7 +16,6 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 
 class PostController extends Controller
 {
@@ -99,11 +100,11 @@ class PostController extends Controller
     /**
      * Storing new post
      *
-     * @param IndexPostFormRequest $request
+     * @param CreatePostFormRequest $request
      * @return RedirectResponse
      * @throws AuthorizationException
      */
-    public function store(IndexPostFormRequest $request): RedirectResponse
+    public function store(CreatePostFormRequest $request): RedirectResponse
     {
         $this->checkAccess('store');
 
@@ -132,9 +133,27 @@ class PostController extends Controller
         return view('admin.posts.create', compact('post', 'categories'));
     }
 
-    public function update(Request $request)
+    /**
+     * Updating post
+     *
+     * @param UpdatePostFormRequest $request
+     * @return RedirectResponse
+     * @throws AuthorizationException
+     */
+    public function update(UpdatePostFormRequest $request): RedirectResponse
     {
-        //
+        $post = $this->postRepository->getByIdForUpdating($request['id']);
+
+        $this->checkAccess('update', $post);
+
+        if (!empty($request->image)) {
+            $this->fileService->delete($post->image_path);
+            $request['image_path'] = $this->fileService->upload($request->image, 'images');
+        }
+
+        $this->postRepository->update($post, $request->all());
+
+        return redirect()->route('admin.index')->with(['status' => 'Post successfully updated']);
     }
 
     /**
@@ -149,6 +168,8 @@ class PostController extends Controller
         $post = $this->postRepository->getById($postId, ['id']);
 
         $this->checkAccess('delete', $post);
+
+        $this->fileService->delete($post->image_path);
 
         $this->postRepository->delete($post);
 

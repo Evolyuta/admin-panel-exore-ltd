@@ -83,4 +83,15 @@ class BaseRepository implements BaseRepositoryInterface
     {
         $model->delete();
     }
+
+    /**
+     * Updating model instance
+     *
+     * @param Model $model
+     * @param array $attributes
+     */
+    public function update(Model $model, array $attributes)
+    {
+        $model->update($attributes);
+    }
 }

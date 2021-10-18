@@ -22,4 +22,15 @@ class FileService
 
         return '/' . $path . '/' . $imageName;
     }
+
+    /**
+     * Deleting file
+     *
+     * @param string $path
+     * @return void
+     */
+    public function delete(string $path)
+    {
+        unlink(public_path() . $path);
+    }
 }
