@@ -59,7 +59,7 @@
                                 </tbody>
                             </table>
 
-                            {{$posts->links('vendor.pagination.bootstrap-4')}}
+                            {{$posts->appends(request()->all())->links('vendor.pagination.bootstrap-4')}}
 
                         </div>
                     </div>
