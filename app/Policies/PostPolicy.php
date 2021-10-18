@@ -61,4 +61,16 @@ class PostPolicy
 
         return in_array($post->id, $posts);
     }
+
+    /**
+     * Determine whether the user can delete the model.
+     *
+     * @param User $user
+     * @param Post $post
+     * @return bool
+     */
+    public function delete(User $user, Post $post): bool
+    {
+        return $this->checkPostOwnership($user, $post);
+    }
 }

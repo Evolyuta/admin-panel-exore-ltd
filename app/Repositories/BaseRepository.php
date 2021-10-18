@@ -73,4 +73,16 @@ class BaseRepository implements BaseRepositoryInterface
 
         return $this->query->findOrFail($id);
     }
+
+    /**
+     * Deleting model instance by id
+     *
+     * @param int $id
+     */
+    public function delete(int $id)
+    {
+        $post = $this->getById($id, ['id']);
+
+        $post->delete();
+    }
 }

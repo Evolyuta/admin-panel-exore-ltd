@@ -29,26 +29,28 @@
                         <div class="card-header">{{ __('Posts') }}</div>
                         <div class="card-body">
                             <table class="table">
+
                                 <thead>
                                 <tr>
                                     <th scope="col">Id</th>
                                     <th scope="col">Name</th>
-                                    <th>&nbsp;</th>
+                                    <th scope="col">Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
+
                                 @foreach($posts as $post)
                                     <tr>
                                         <th scope="row">{{$post->id}}</th>
                                         <td>
                                             {{$post->name}}
                                         </td>
-                                        <td class="td-fit text-right pr-6 align-middle">
-                                            <div class="inline-flex items-center">
+                                        <td class="td-fit pr-4">
+                                            <div class="items-center d-flex">
 
                                                 @can('view', $post)
-                                                    <span class="inline-flex">
-                                                    <a href="{{ route('admin.post.show', ['id'=>$post->id])  }}"
+                                                    <span>
+                                                    <a href="{{ route('admin.post.show', ['id'=>$post->id]) }}"
                                                        class="cursor-pointer text-70 mr-3 inline-flex items-center has-tooltip"
                                                     >
                                                 @include('svg.view_icon')
@@ -67,14 +69,17 @@
                                                 @endcan
 
                                                 @can('delete', $post)
-                                                    <span class="inline-flex">
-                                                    <a href="#"
-                                                       class="inline-flex cursor-pointer text-70 mr-3 has-tooltip"
+                                                    <form action="{{ route('admin.post.delete', ['id'=>$post->id]) }}"
+                                                          method="post"
                                                     >
-                                                @include('svg.delete_icon')
-                                                    </a>
-                                                </span>
+                                                        @csrf
+                                                        <input
+                                                            class="btn-danger cursor-pointer text-70 mr-3 inline-flex items-center has-tooltip"
+                                                            type="submit" value="Delete"/>
+                                                        <input type="hidden" name="_method" value="delete"/>
+                                                    </form>
                                                 @endcan
+
                                             </div>
                                         </td>
                                     </tr>

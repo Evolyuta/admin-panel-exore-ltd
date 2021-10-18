@@ -28,6 +28,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
     Route::prefix('post')->name('post.')->group(function () {
+        Route::delete('/{id}', [PostController::class, 'delete'])->name('delete');
         Route::get('/create', [PostController::class, 'create'])->name('create');
         Route::get('/{id}', [PostController::class, 'show'])->name('show');
         Route::post('', [PostController::class, 'store'])->name('store');

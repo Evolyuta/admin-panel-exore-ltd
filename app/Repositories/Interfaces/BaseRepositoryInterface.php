@@ -15,4 +15,6 @@ interface BaseRepositoryInterface
     public function getList(array $select = []);
 
     public function getById(int $id, array $select = [], array $relationships = []);
+
+    public function delete(int $id);
 }

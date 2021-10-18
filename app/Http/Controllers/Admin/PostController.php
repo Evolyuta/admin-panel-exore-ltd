@@ -112,4 +112,17 @@ class PostController extends Controller
 
         return redirect()->route('admin.index')->with(['status' => 'Post successfully created']);
     }
+
+    /**
+     * Post delete method.
+     *
+     * @param int $postId
+     * @return RedirectResponse
+     */
+    public function delete(int $postId): RedirectResponse
+    {
+        $this->postRepository->delete($postId);
+
+        return redirect()->route('admin.index')->with(['status' => 'Post successfully deleted']);
+    }
 }
