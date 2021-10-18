@@ -4,6 +4,7 @@ namespace App\Services;
 
 
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Log;
 
 class FileService
 {
@@ -31,6 +32,10 @@ class FileService
      */
     public function delete(string $path)
     {
-        unlink(public_path() . $path);
+        try {
+            unlink(public_path() . $path);
+        } catch (\ErrorException $errorException) {
+            Log::warning($errorException);
+        }
     }
 }
