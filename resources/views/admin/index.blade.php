@@ -33,6 +33,7 @@
                                 <tr>
                                     <th scope="col">Id</th>
                                     <th scope="col">Name</th>
+                                    <th>&nbsp;</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -40,15 +41,49 @@
                                     <tr>
                                         <th scope="row">{{$post->id}}</th>
                                         <td>
-                                            <a href="{{ route('admin.post.show', ['id'=>$post->id])  }}">
-                                                {{$post->name}}
-                                            </a>
+                                            {{$post->name}}
+                                        </td>
+                                        <td class="td-fit text-right pr-6 align-middle">
+                                            <div class="inline-flex items-center">
+
+                                                @can('view', $post)
+                                                    <span class="inline-flex">
+                                                    <a href="{{ route('admin.post.show', ['id'=>$post->id])  }}"
+                                                       class="cursor-pointer text-70 mr-3 inline-flex items-center has-tooltip"
+                                                    >
+                                                @include('svg.view_icon')
+                                               </a>
+                                                </span>
+                                                @endcan
+
+                                                @can('edit', $post)
+                                                    <span class="inline-flex">
+                                                    <a href="#"
+                                                       class="inline-flex cursor-pointer text-70 mr-3 has-tooltip"
+                                                    >
+                                                @include('svg.edit_icon')
+                                                    </a>
+                                                </span>
+                                                @endcan
+
+                                                @can('delete', $post)
+                                                    <span class="inline-flex">
+                                                    <a href="#"
+                                                       class="inline-flex cursor-pointer text-70 mr-3 has-tooltip"
+                                                    >
+                                                @include('svg.delete_icon')
+                                                    </a>
+                                                </span>
+                                                @endcan
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
                             </table>
+
                             {{$posts->links('vendor.pagination.bootstrap-4')}}
+
                         </div>
                     </div>
                 </div>
