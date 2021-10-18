@@ -66,4 +66,18 @@ class User extends Authenticatable
             'id'
         );
     }
+
+    /**
+     * Relationship with employees
+     *
+     * @return HasMany
+     */
+    public function employees(): HasMany
+    {
+        return $this->hasMany(
+            User::class,
+            'manager_id',
+            'id',
+        );
+    }
 }

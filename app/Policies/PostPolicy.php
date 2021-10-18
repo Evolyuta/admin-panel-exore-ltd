@@ -90,13 +90,13 @@ class PostPolicy
      */
     private function checkPostOwnership(User $user, Post $post, bool $onlyDirectAttribution = false): bool
     {
-        if (!$onlyDirectAttribution && $user->is_manager) {
-            $posts = $user->employeePosts->pluck('id')->toArray();
-        } else {
-            $posts = $user->posts->pluck('id')->toArray();
-        }
+        $employeeId = $post->employee_id;
 
-        return in_array($post->id, $posts);
+        if (!$onlyDirectAttribution && $user->is_manager) {
+            return $user->employees->pluck('id')->contains($employeeId);
+        } else {
+            return $employeeId === $user->id;
+        }
     }
 
 }

@@ -14,11 +14,11 @@ interface PostRepositoryInterface extends BaseRepositoryInterface
 
     public function getListByAuthedManager(array $parameters = []);
 
-    public function getByIdForDetailPage(int $id, array $additionalRelationships = [], array $additionalSelect = []);
+    public function getByIdForDetailPage(int $id);
 
     public function getByIdForDetailPageForManager(int $id);
 
     public function getByIdForEditForm(int $id);
 
-    public function getByIdForUpdating(int $id);
+    public function getByIdForChanging(int $id);
 }

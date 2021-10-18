@@ -23,16 +23,12 @@ class PostRepository extends BaseRepository implements PostRepositoryInterface
     }
 
     /**
-     * Getting post list with authed user as author
+     * Getting post list with authed user
      *
+     * @param string $relationship
      * @param array $parameters
      * @return mixed
      */
-    public function getListByAuthedEmployee(array $parameters = [])
-    {
-        return $this->getListByAuthedUser('posts', $parameters)->select(['id', 'name'])->paginate(10);
-    }
-
     private function getListByAuthedUser(string $relationship, array $parameters = [])
     {
         $filter = [];
@@ -44,6 +40,17 @@ class PostRepository extends BaseRepository implements PostRepositoryInterface
         }
 
         return auth()->user()->{$relationship}()->where($filter);
+    }
+
+    /**
+     * Getting post list with authed user as author
+     *
+     * @param array $parameters
+     * @return mixed
+     */
+    public function getListByAuthedEmployee(array $parameters = [])
+    {
+        return $this->getListByAuthedUser('posts', $parameters)->select(['id', 'name', 'employee_id'])->paginate(10);
     }
 
     /**
@@ -65,34 +72,30 @@ class PostRepository extends BaseRepository implements PostRepositoryInterface
      */
     public function getByIdForDetailPageForManager(int $id)
     {
-        return $this->getByIdForDetailPage($id, ['employee:id,name'], ['employee_id']);
+        return $this->getByIdForDetailPage($id);
     }
 
     /**
      * Getting post instance by id for detail page
      *
      * @param int $id
-     * @param array $additionalRelationships
-     * @param array $additionalSelect
      * @return Builder|Builder[]|Collection|Model|null
      */
-    public function getByIdForDetailPage(int $id, array $additionalRelationships = [], array $additionalSelect = [])
+    public function getByIdForDetailPage(int $id)
     {
-        $relationships = array_merge(['category:id,name'], $additionalRelationships);
-        $select = array_merge(
+        return $this->getById(
+            $id,
             [
                 'id',
                 'name',
                 'image_path',
                 'category_id',
+                'employee_id',
             ],
-            $additionalSelect
-        );
-
-        return $this->getById(
-            $id,
-            $select,
-            $relationships
+            [
+                'category:id,name',
+                'employee:id,name',
+            ]
         );
     }
 
@@ -108,20 +111,22 @@ class PostRepository extends BaseRepository implements PostRepositoryInterface
             'id',
             'name',
             'category_id',
+            'employee_id',
         ]);
     }
 
     /**
-     * Getting post instance by id for updating method
+     * Getting post instance by id for changing instance (updating or deleting methods)
      *
      * @param int $id
      * @return Builder|Builder[]|Collection|Model|null
      */
-    public function getByIdForUpdating(int $id)
+    public function getByIdForChanging(int $id)
     {
         return $this->getById($id, [
             'id',
             'image_path',
+            'employee_id',
         ]);
     }
 }

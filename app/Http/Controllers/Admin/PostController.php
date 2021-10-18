@@ -142,7 +142,7 @@ class PostController extends Controller
      */
     public function update(UpdatePostFormRequest $request): RedirectResponse
     {
-        $post = $this->postRepository->getByIdForUpdating($request['id']);
+        $post = $this->postRepository->getByIdForChanging($request['id']);
 
         $this->checkAccess('update', $post);
 
@@ -165,7 +165,7 @@ class PostController extends Controller
      */
     public function delete(int $postId): RedirectResponse
     {
-        $post = $this->postRepository->getById($postId, ['id']);
+        $post = $this->postRepository->getByIdForChanging($postId);
 
         $this->checkAccess('delete', $post);
 

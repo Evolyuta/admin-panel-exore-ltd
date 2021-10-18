@@ -16,7 +16,7 @@
                     </div>
                 </div>
 
-                @if(!empty($post->employee))
+                @if(auth()->user()->is_manager)
                     <div class="d-flex">
                         <p class="mr-3">Employee: </p>
                         <a href="{{ route('admin.index', ['employee_id'=>$post->employee->id])  }}">
