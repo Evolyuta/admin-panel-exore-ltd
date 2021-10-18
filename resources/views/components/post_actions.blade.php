@@ -26,7 +26,7 @@
     >
         @csrf
         <input
-            class="btn-danger cursor-pointer text-70 mr-3 inline-flex items-center has-tooltip"
+            class="btn btn-danger"
             type="submit" value="Delete"/>
         <input type="hidden" name="_method" value="delete"/>
     </form>
